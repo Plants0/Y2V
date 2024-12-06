@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #loadingMessage {
+            display: none;
+            text-align: center;
+            color: #4CAF50;
+            font-size: 18px;
+        }
+        #errorMessage {
+            display: none;
+            text-align: center;
+            color: red;
+            font-size: 18px;
+        }
+        #successMessage {
+            display: none;
+            text-align: center;
+            color: green;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Video Downloader</h1>
+    <input type="text" id="videoURL" placeholder="Enter YouTube video URL">
+    <button onclick="downloadVideo()">Download</button>
+    
+    <div id="loadingMessage">Please wait, processing...</div>
+    <div id="successMessage">Download started successfully! Redirecting...</div>
+    <div id="errorMessage">Invalid URL. Please try again. Make sure it's a YouTube URL.</div>
+
+    <script>
+        function downloadVideo() {
+            const videoURL = document.getElementById('videoURL').value;
+            const loadingMessage = document.getElementById('loadingMessage');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Show the loading message
+            loadingMessage.style.display = "block";
+            successMessage.style.display = "none";
+            errorMessage.style.display = "none";
+            
+            // Regular expression to validate YouTube video URL
+            const youtubeRegex = /^(https?\:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
+            
+            // Check if the URL is valid
+            if (videoURL && youtubeRegex.test(videoURL)) {
+                // Simulate the download process
+                setTimeout(function() {
+                    loadingMessage.style.display = "none";
+                    successMessage.style.display = "block";
+
+                    // Extract video ID from URL (handles both regular and short URLs)
+                    let videoID;
+                    if (videoURL.includes("youtu.be")) {
+                        videoID = videoURL.split('youtu.be/')[1];
+                    } else {
+                        videoID = videoURL.split('v=')[1].split('&')[0];
+                    }
+
+                    // Generate the download link (using SaveFrom.net as an example)
+                    const downloadURL = `https://www.ssyoutube.com/watch?v=${videoID}`;
+
+                    // Redirect user to the download page
+                    window.location.href = downloadURL;
+                }, 3000);  // Simulate 3-second delay
+            } else {
+                loadingMessage.style.display = "none";
+                errorMessage.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
